@@ -1,8 +1,8 @@
 *
 *		PROGRAM PSSBOUNDS
 *		
-*		version 1.1
-*		06/09/16
+*		version 1.2
+*		06/14/16
 *		Andrew Q. Philips
 *		Texas A&M University
 *		aphilips@pols.tamu.edu
@@ -18,7 +18,7 @@
 
 capture program drop pssbounds
 capture program define pssbounds, rclass
-syntax , OBSservations(numlist) fstat(numlist) [tstat(numlist)] case(string)  k(numlist) 
+syntax , OBServations(numlist) fstat(numlist) [tstat(numlist)] case(string)  k(numlist) 
 
 version 8
 
@@ -47,7 +47,7 @@ else	{
 		exit 198
 	}
 }
-loc obs = observations
+loc obs = `observations'
 tempname fmat tmat
 
 
@@ -1642,18 +1642,18 @@ else	{				// asym max rows k=10
 
 di
 di in smcl in gr	"PESARAN, SHIN AND SMITH (2001) COINTEGRATION TEST"  
-di in smcl in gr	"Obs: `obs'"
-di in smcl in gr	"No. Regressors (k): `k'"
-di in smcl in gr	"Case: `case'"
+di in smcl in gr	"Obs:" in y " `obs'"
+di in smcl in gr	"No. Regressors (k):" in y " `k'"
+di in smcl in gr	"Case:" in y " `case'"
 di in smcl in gr 	"{hline 60}"
 di in smcl in gr 	_col(34) "F-test"
 di in smcl in gr 	"{hline 60}"
 di in smcl in gr	_col(20)"<{hline 5} I(0) {hline 10} I(1) {hline 5}>"
-di in smcl in gr	 "10% critical value"   _col(21)  %10.3f  `f_10_0'   _col(37)       %10.3f `f_10_1'
-di in smcl in gr	 "5% critical value "   _col(21)  %10.3f  `f_05_0'   _col(37)   	%10.3f `f_05_1'
-di in smcl in gr	 "1% critical value "   _col(21)  %10.3f  `f_01_0'   _col(37)       %10.3f `f_01_1'
+di in smcl in gr	 "10% critical value" in y  _col(21)  %10.3f  `f_10_0'   _col(37)       %10.3f `f_10_1'
+di in smcl in gr	 "5% critical value " in y  _col(21)  %10.3f  `f_05_0'   _col(37)   	%10.3f `f_05_1'
+di in smcl in gr	 "1% critical value " in y  _col(21)  %10.3f  `f_01_0'   _col(37)       %10.3f `f_01_1'
 di 
-di in smcl in gr	 "F-stat. =" %10.3f `fstat'
+di in smcl in gr	 "F-stat. =" in y %10.3f `fstat'
 
 if "`tstat'" != ""	{
 	if "`case'" == "2" | "`case'" == "4"	{
@@ -1680,11 +1680,11 @@ if "`tstat'" != ""	{
 			loc tnote = "`tnote' Asymptotic critical values only available up to k = 10."
 		}
 		di in smcl in gr	_col(20)"<{hline 5} I(1) {hline 10} I(0) {hline 5}>"
-		di in smcl in gr	 "10% critical value"   _col(21)  %10.3f  `t_10_0'   _col(37)       %10.3f `t_10_1'
-		di in smcl in gr	 "5% critical value "   _col(21)  %10.3f  `t_05_0'   _col(37)   	%10.3f `t_05_1'
-		di in smcl in gr	 "1% critical value "   _col(21)  %10.3f  `t_01_0'   _col(37)       %10.3f `t_01_1'
+		di in smcl in gr	 "10% critical value" in y  _col(21)  %10.3f  `t_10_0'   _col(37)       %10.3f `t_10_1'
+		di in smcl in gr	 "5% critical value " in y  _col(21)  %10.3f  `t_05_0'   _col(37)   	%10.3f `t_05_1'
+		di in smcl in gr	 "1% critical value " in y  _col(21)  %10.3f  `t_01_0'   _col(37)       %10.3f `t_01_1'
 		di 
-		di in smcl in gr	 "t-stat. =" %10.3f `tstat'	
+		di in smcl in gr	 "t-stat. =" in y %10.3f `tstat'	
 	}
 }
 di in smcl in gr 	"{hline 60}"
