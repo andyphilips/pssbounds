@@ -1,8 +1,8 @@
 *
 *		PROGRAM PSSBOUNDS
 *		
-*		version 1.2
-*		06/14/16
+*		version 1.3
+*		08/22/16
 *		Andrew Q. Philips
 *		Texas A&M University
 *		aphilips@pols.tamu.edu
@@ -69,7 +69,7 @@ if `obs' <= 30	{
 		 */ 1.70, 2.83, 1.97, 3.18, 2.54, 3.91  \	/* 7
 		 */ 1.66, 2.79, 1.91, 3.11, 2.45, 3.79 	\	/* 8
 		 */ 1.63, 2.75, 1.86, 3.05, 2.34, 3.68 	\	/* 9
-		 */ 11.60, 2.72, 1.82, 2.99, 2.26, 3.60) 	// 10 
+		 */ 1.60, 2.72, 1.82, 2.99, 2.26, 3.60) 	// 10 
 		 if "`tstat'" != ""	{
 		 	loc tnote "Small-sample critical values not provided for Case I. Asymptotic critical values used."
 		    *		0.10		0.05		0.010
@@ -196,7 +196,7 @@ else if `obs' <= 35	{
 		 */ 1.70, 2.83, 1.97, 3.18, 2.54, 3.91  \	/* 7
 		 */ 1.66, 2.79, 1.91, 3.11, 2.45, 3.79 	\	/* 8
 		 */ 1.63, 2.75, 1.86, 3.05, 2.34, 3.68 	\	/* 9
-		 */ 11.60, 2.72, 1.82, 2.99, 2.26, 3.60) 	// 10 
+		 */ 1.60, 2.72, 1.82, 2.99, 2.26, 3.60) 	// 10 
 		 if "`tstat'" != ""	{
 		 	loc tnote "Small-sample critical values not provided for Case I. Asymptotic critical values used."
 		    *		0.10		0.05		0.010
@@ -323,7 +323,7 @@ else if `obs' <= 40	{
 		 */ 1.70, 2.83, 1.97, 3.18, 2.54, 3.91  \	/* 7
 		 */ 1.66, 2.79, 1.91, 3.11, 2.45, 3.79 	\	/* 8
 		 */ 1.63, 2.75, 1.86, 3.05, 2.34, 3.68 	\	/* 9
-		 */ 11.60, 2.72, 1.82, 2.99, 2.26, 3.60) 	// 10 
+		 */ 1.60, 2.72, 1.82, 2.99, 2.26, 3.60) 	// 10 
 		 if "`tstat'" != ""	{
 		 	loc tnote "Small-sample critical values not provided for Case I. Asymptotic critical values used."
 		    *		0.10		0.05		0.010
@@ -345,7 +345,7 @@ else if `obs' <= 40	{
 	else if `case' == 2	{
  		*		0.10	  0.05		 0.010
 		* 	I(0)	I(1)  I(0) I(1)  I(0) I(1)
-		mat `fmat' = (3.955, 3.955, 4.960, 4.960 \		/* 0
+		mat `fmat' = (3.955, 3.955, 4.960, 4.960, 7.220, 7.220 \		/* 0
 		*/ 3.210, 3.730, 3.937, 4.523, 5.593, 6.333 \	/* 1
 		*/ 2.835, 3.585, 3.435, 4.260, 4.770, 5.855 \	/* 2
 		*/ 2.592, 3.454, 3.100, 4.088, 4.310, 5.544 \	/* 3
@@ -450,7 +450,7 @@ else if `obs' <= 45	{
 		 */ 1.70, 2.83, 1.97, 3.18, 2.54, 3.91  \	/* 7
 		 */ 1.66, 2.79, 1.91, 3.11, 2.45, 3.79 	\	/* 8
 		 */ 1.63, 2.75, 1.86, 3.05, 2.34, 3.68 	\	/* 9
-		 */ 11.60, 2.72, 1.82, 2.99, 2.26, 3.60) 	// 10 
+		 */ 1.60, 2.72, 1.82, 2.99, 2.26, 3.60) 	// 10 
 		 if "`tstat'" != ""	{
 		 	loc tnote "Small-sample critical values not provided for Case I. Asymptotic critical values used."
 		    *		0.10		0.05		0.010
@@ -577,7 +577,7 @@ else if `obs' <= 50	{
 		 */ 1.70, 2.83, 1.97, 3.18, 2.54, 3.91  \	/* 7
 		 */ 1.66, 2.79, 1.91, 3.11, 2.45, 3.79 	\	/* 8
 		 */ 1.63, 2.75, 1.86, 3.05, 2.34, 3.68 	\	/* 9
-		 */ 11.60, 2.72, 1.82, 2.99, 2.26, 3.60) 	// 10 
+		 */ 1.60, 2.72, 1.82, 2.99, 2.26, 3.60) 	// 10 
 		 if "`tstat'" != ""	{
 		 	loc tnote "Small-sample critical values not provided for Case I. Asymptotic critical values used."
 		    *		0.10		0.05		0.010
@@ -605,7 +605,7 @@ else if `obs' <= 50	{
 		*/ 2.538, 3.398, 3.048, 4.002, 4.188, 5.328 \	/* 3
 		*/ 2.372, 3.320, 2.823, 3.872, 3.845, 5.150 \	/* 4
 		*/ 2.259, 3.264, 2.670, 3.781, 3.593, 4.981 \	/* 5
-		*/ 2.170, 3.220, 2.550, 3.708, 3.424 4.880 \	/* 6
+		*/ 2.170, 3.220, 2.550, 3.708, 3.424, 4.880 \	/* 6
 		*/ 2.099, 3.181, 2.457, 3.650, 3.282, 4.730)	// 7
 		if "`tstat'" != ""	{
 		 	loc tnote "Critical values do not currently exist for Case II."				
@@ -704,7 +704,7 @@ else if `obs' <= 55	{
 		 */ 1.70, 2.83, 1.97, 3.18, 2.54, 3.91  \	/* 7
 		 */ 1.66, 2.79, 1.91, 3.11, 2.45, 3.79 	\	/* 8
 		 */ 1.63, 2.75, 1.86, 3.05, 2.34, 3.68 	\	/* 9
-		 */ 11.60, 2.72, 1.82, 2.99, 2.26, 3.60) 	// 10 
+		 */ 1.60, 2.72, 1.82, 2.99, 2.26, 3.60) 	// 10 
 		 if "`tstat'" != ""	{
 		 	loc tnote "Small-sample critical values not provided for Case I. Asymptotic critical values used."
 		    *		0.10		0.05		0.010
@@ -831,7 +831,7 @@ else if `obs' <= 60	{
 		 */ 1.70, 2.83, 1.97, 3.18, 2.54, 3.91  \	/* 7
 		 */ 1.66, 2.79, 1.91, 3.11, 2.45, 3.79 	\	/* 8
 		 */ 1.63, 2.75, 1.86, 3.05, 2.34, 3.68 	\	/* 9
-		 */ 11.60, 2.72, 1.82, 2.99, 2.26, 3.60) 	// 10 
+		 */ 1.60, 2.72, 1.82, 2.99, 2.26, 3.60) 	// 10 
 		 if "`tstat'" != ""	{
 		 	loc tnote "Small-sample critical values not provided for Case I. Asymptotic critical values used."
 		    *		0.10		0.05		0.010
@@ -958,7 +958,7 @@ else if `obs' <= 65	{
 		 */ 1.70, 2.83, 1.97, 3.18, 2.54, 3.91  \	/* 7
 		 */ 1.66, 2.79, 1.91, 3.11, 2.45, 3.79 	\	/* 8
 		 */ 1.63, 2.75, 1.86, 3.05, 2.34, 3.68 	\	/* 9
-		 */ 11.60, 2.72, 1.82, 2.99, 2.26, 3.60) 	// 10 
+		 */ 1.60, 2.72, 1.82, 2.99, 2.26, 3.60) 	// 10 
 		 if "`tstat'" != ""	{
 		 	loc tnote "Small-sample critical values not provided for Case I. Asymptotic critical values used."
 		    *		0.10		0.05		0.010
@@ -1085,7 +1085,7 @@ else if `obs' <= 70	{
 		 */ 1.70, 2.83, 1.97, 3.18, 2.54, 3.91  \	/* 7
 		 */ 1.66, 2.79, 1.91, 3.11, 2.45, 3.79 	\	/* 8
 		 */ 1.63, 2.75, 1.86, 3.05, 2.34, 3.68 	\	/* 9
-		 */ 11.60, 2.72, 1.82, 2.99, 2.26, 3.60) 	// 10 
+		 */ 1.60, 2.72, 1.82, 2.99, 2.26, 3.60) 	// 10 
 		 if "`tstat'" != ""	{
 		 	loc tnote "Small-sample critical values not provided for Case I. Asymptotic critical values used."
 		    *		0.10		0.05		0.010
@@ -1212,7 +1212,7 @@ else if `obs' <= 75	{
 		 */ 1.70, 2.83, 1.97, 3.18, 2.54, 3.91  \	/* 7
 		 */ 1.66, 2.79, 1.91, 3.11, 2.45, 3.79 	\	/* 8
 		 */ 1.63, 2.75, 1.86, 3.05, 2.34, 3.68 	\	/* 9
-		 */ 11.60, 2.72, 1.82, 2.99, 2.26, 3.60) 	// 10 
+		 */ 1.60, 2.72, 1.82, 2.99, 2.26, 3.60) 	// 10 
 		 if "`tstat'" != ""	{
 		 	loc tnote "Small-sample critical values not provided for Case I. Asymptotic critical values used."
 		    *		0.10		0.05		0.010
@@ -1339,7 +1339,7 @@ else if `obs' <= 80	{
 		 */ 1.70, 2.83, 1.97, 3.18, 2.54, 3.91  \	/* 7
 		 */ 1.66, 2.79, 1.91, 3.11, 2.45, 3.79 	\	/* 8
 		 */ 1.63, 2.75, 1.86, 3.05, 2.34, 3.68 	\	/* 9
-		 */ 11.60, 2.72, 1.82, 2.99, 2.26, 3.60) 	// 10 
+		 */ 1.60, 2.72, 1.82, 2.99, 2.26, 3.60) 	// 10 
 		 if "`tstat'" != ""	{
 		 	loc tnote "Small-sample critical values not provided for Case I. Asymptotic critical values used."
 		    *		0.10		0.05		0.010
@@ -1466,7 +1466,7 @@ else	{	// asymtotic
 		 */ 1.70, 2.83, 1.97, 3.18, 2.54, 3.91  \	/* 7
 		 */ 1.66, 2.79, 1.91, 3.11, 2.45, 3.79 	\	/* 8
 		 */ 1.63, 2.75, 1.86, 3.05, 2.34, 3.68 	\	/* 9
-		 */ 11.60, 2.72, 1.82, 2.99, 2.26, 3.60) 	// 10 
+		 */ 1.60, 2.72, 1.82, 2.99, 2.26, 3.60) 	// 10 
 		 if "`tstat'" != ""	{
 		 	loc tnote "Asymptotic critical values used."
 		    *		0.10		0.05		0.010
@@ -1599,20 +1599,21 @@ else	{	// asymtotic
 
 if `obs' <= 80	{		// max rows k=7
 	if `k' < 7	{
-		loc f_10_0 = `fmat'[`k',1]
-		loc f_10_1 = `fmat'[`k',2]
-		loc f_05_0 = `fmat'[`k',3]
-		loc f_05_1 = `fmat'[`k',4]
-		loc f_01_0 = `fmat'[`k',5]
-		loc f_01_1 = `fmat'[`k',6]
+		loc k2 = `k' + 1		// b/c of 0'th row
+		loc f_10_0 = `fmat'[`k2',1]
+		loc f_10_1 = `fmat'[`k2',2]
+		loc f_05_0 = `fmat'[`k2',3]
+		loc f_05_1 = `fmat'[`k2',4]
+		loc f_01_0 = `fmat'[`k2',5]
+		loc f_01_1 = `fmat'[`k2',6]
 	}
 	else	{
-		loc f_10_0 = `fmat'[7,1]
-		loc f_10_1 = `fmat'[7,2]
-		loc f_05_0 = `fmat'[7,3]
-		loc f_05_1 = `fmat'[7,4]
-		loc f_01_0 = `fmat'[7,5]
-		loc f_01_1 = `fmat'[7,6]
+		loc f_10_0 = `fmat'[8,1]
+		loc f_10_1 = `fmat'[8,2]
+		loc f_05_0 = `fmat'[8,3]
+		loc f_05_1 = `fmat'[8,4]
+		loc f_01_0 = `fmat'[8,5]
+		loc f_01_1 = `fmat'[8,6]
 		if `k' > 7	{
 			loc fnote = "`fnote' Small-sample critical values only available up to k = 7."
 		}
@@ -1620,20 +1621,21 @@ if `obs' <= 80	{		// max rows k=7
 }
 else	{				// asym max rows k=10
 	if `k' < 10	{
-		loc f_10_0 = `fmat'[`k',1]
-		loc f_10_1 = `fmat'[`k',2]
-		loc f_05_0 = `fmat'[`k',3]
-		loc f_05_1 = `fmat'[`k',4]
-		loc f_01_0 = `fmat'[`k',5]
-		loc f_01_1 = `fmat'[`k',6]
+		loc k2 = `k' + 1	// b/c of 0'th row
+		loc f_10_0 = `fmat'[`k2',1]
+		loc f_10_1 = `fmat'[`k2',2]
+		loc f_05_0 = `fmat'[`k2',3]
+		loc f_05_1 = `fmat'[`k2',4]
+		loc f_01_0 = `fmat'[`k2',5]
+		loc f_01_1 = `fmat'[`k2',6]
 	}
 	else	{
-		loc f_10_0 = `fmat'[10,1]
-		loc f_10_1 = `fmat'[10,2]
-		loc f_05_0 = `fmat'[10,3]
-		loc f_05_1 = `fmat'[10,4]
-		loc f_01_0 = `fmat'[10,5]
-		loc f_01_1 = `fmat'[10,6]
+		loc f_10_0 = `fmat'[11,1]
+		loc f_10_1 = `fmat'[11,2]
+		loc f_05_0 = `fmat'[11,3]
+		loc f_05_1 = `fmat'[11,4]
+		loc f_01_0 = `fmat'[11,5]
+		loc f_01_1 = `fmat'[11,6]
 		if `k' > 10	{
 			loc fnote = "`fnote' Asymptotic critical values only available up to k = 10."
 		}
@@ -1663,23 +1665,24 @@ if "`tstat'" != ""	{
 		di in smcl in gr 	_col(34) "t-test"
 		di in smcl in gr 	"{hline 60}"	
 		if `k' < 10	{
-			loc t_10_0 = `tmat'[`k',1]
-			loc t_10_1 = `tmat'[`k',2]
-			loc t_05_0 = `tmat'[`k',3]
-			loc t_05_1 = `tmat'[`k',4]
-			loc t_01_0 = `tmat'[`k',5]
-			loc t_01_1 = `tmat'[`k',6]
+			loc k2 = `k' + 1	// b/c of 0'th row
+			loc t_10_0 = `tmat'[`k2',1]
+			loc t_10_1 = `tmat'[`k2',2]
+			loc t_05_0 = `tmat'[`k2',3]
+			loc t_05_1 = `tmat'[`k2',4]
+			loc t_01_0 = `tmat'[`k2',5]
+			loc t_01_1 = `tmat'[`k2',6]
 		}
 		else	{
-			loc t_10_0 = `tmat'[10,1]
-			loc t_10_1 = `tmat'[10,2]
-			loc t_05_0 = `tmat'[10,3]
-			loc t_05_1 = `tmat'[10,4]
-			loc t_01_0 = `tmat'[10,5]
-			loc t_01_1 = `tmat'[10,6]
+			loc t_10_0 = `tmat'[11,1]
+			loc t_10_1 = `tmat'[11,2]
+			loc t_05_0 = `tmat'[11,3]
+			loc t_05_1 = `tmat'[11,4]
+			loc t_01_0 = `tmat'[11,5]
+			loc t_01_1 = `tmat'[11,6]
 			loc tnote = "`tnote' Asymptotic critical values only available up to k = 10."
 		}
-		di in smcl in gr	_col(20)"<{hline 5} I(1) {hline 10} I(0) {hline 5}>"
+		di in smcl in gr	_col(20)"<{hline 5} I(0) {hline 10} I(1) {hline 5}>"
 		di in smcl in gr	 "10% critical value" in y  _col(21)  %10.3f  `t_10_0'   _col(37)       %10.3f `t_10_1'
 		di in smcl in gr	 "5% critical value " in y  _col(21)  %10.3f  `t_05_0'   _col(37)   	%10.3f `t_05_1'
 		di in smcl in gr	 "1% critical value " in y  _col(21)  %10.3f  `t_01_0'   _col(37)       %10.3f `t_01_1'
@@ -1688,9 +1691,9 @@ if "`tstat'" != ""	{
 	}
 }
 di in smcl in gr 	"{hline 60}"
-di in smcl in gr	"`fnote'"
+di in smcl in gr	"F-statistic note: `fnote'"
 if "`tstat'" != ""	{
-	di in smcl in gr "t-stat note: `tnote'"
+	di in smcl in gr "t-statistic note: `tnote'"
 }
 
 
@@ -1703,26 +1706,32 @@ end
 /*----------- What Table should look like -------
 
 PESARAN, SHIN AND SMITH (2001) COINTEGRATION TEST
-Obs: 50
-No. Regressors (k): 3
-Case: III
----------------------------------------------------
-					F-test						   |
----------------------------------------------------
-					<------- I(0)  ----------------- I(1)  --------->
-10% critical value		-1.3							2.3
-5% critical value		-1.3							2.3
-1% critical value		-1.3							2.3
+Obs: 91
+No. Regressors (k): 1
+Case: 1
+------------------------------------------------------------
+                                 F-test
+------------------------------------------------------------
+                   <----- I(0) ---------- I(1) ----->
+10% critical value       3.000           3.000
+5% critical value        4.200           4.200
+1% critical value        7.170           7.170
 
-F-stat. = -2
----------------------------------------------------
-					t-test							|
----------------------------------------------------
-<------- I(1) 3 --------------- I(0) 1.2 --------->
-t-stat. = 2; indeterminant
----------------------------------------------------
-Note about F-test critical value:
-Note about t-test critical value:
+F-stat. =     3.830
+------------------------------------------------------------
+                                 t-test
+------------------------------------------------------------
+                   <----- I(0) ---------- I(1) ----->
+10% critical value      -1.620          -1.620
+5% critical value       -1.950          -1.950
+1% critical value       -2.580          -2.580
+
+t-stat. =    -2.730
+------------------------------------------------------------
+Asymptotic critical values used.
+t-stat note: Asymptotic critical values used.
+
+
 
 
 */
