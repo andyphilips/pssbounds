@@ -1,0 +1,8 @@
+title: pssbounds
+description: Module to display the necessary critical values to conduct the Pesaran, Shin and Smith (2001) bounds test for cointegration (R & Stata)
+google_analytics: 
+show_downloads: true
+theme: jekyll-theme-minimal
+
+gems:
+  - jekyll-mentions
