@@ -3,7 +3,7 @@ Module to display the necessary critical values to conduct the Pesaran, Shin and
 
 ## Download
 ### Stata
-The most recent Stata version of `pssbounds` is available on this page (Philips 2016a). This program is part of a suite that also includes `dynpss`, a program to dynamically simulate autoregressive distributed lag models, available [HERE](http://andyphilips.github.io/dynpss/). 
+The most recent Stata version of `pssbounds`  can be downloaded by clicking [here](https://github.com/andyphilips/pssbounds/archive/master.zip) (Philips 2016a). This program is part of a suite that also includes `dynpss`, a program to dynamically simulate autoregressive distributed lag models, available [HERE](http://andyphilips.github.io/dynpss/). 
 
 ### R
 In R, the `pssbounds` function is part of the `pss` package, available [HERE](https://github.com/andyphilips/pss) (Jordan and Philips 2016). To download pss, you will need to obtain the devtools package and make a call from R to GitHub:
