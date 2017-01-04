@@ -99,6 +99,7 @@ Pesaran, M Hashem, Yongcheol Shin and Richard J Smith. 2001. "Bounds testing app
 
 
 ## Examples<a id="examples"></a>
+
 ### Stata<a id="examplestata"></a>
 
 EXAMPLE 1
