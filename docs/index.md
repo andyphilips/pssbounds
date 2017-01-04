@@ -58,6 +58,7 @@ pssbounds , observations(#) fstat(#) case(#) k(#) [tstat(#)]
 ```r
 pssbounds(obs, fstat, tstat=NULL, case, k)
 ```
+
 #### Required options
 * `obs` is the number of observations (i.e. length of the series) from the ARDL-bounds model. Since the critical values of the bounds test depend on the size of the sample, this option is required.
 * `fstat`is the value of the F-statistic from the test that all variables appearing in levels are jointly equal to zero.
@@ -99,9 +100,11 @@ Pesaran, M Hashem, Yongcheol Shin and Richard J Smith. 2001. "Bounds testing app
 
 ## Examples<a id="examples"></a>
 ### Stata<a id="examplestata"></a>
+
 EXAMPLE 1
 
 Setup
+
 ```do
 webuse lutkepohl2
 tsset
@@ -112,6 +115,7 @@ regress d.ln_inv l.ln_inv d.ln_inc l.ln_inc d.ln_consump l.ln_consump
 test l.ln_inv l.ln_inc l.ln_consump
 ```
 Run bounds test
+
 ```do
 pssbounds, fstat(2.60) obs(91) case(3) k(2)
 ```
@@ -123,10 +127,12 @@ EXAMPLE 2
 regress d.ln_inv l.ln_inv d.ln_inc d.ln_consump l.ln_consump, nocon
 ```
 F-test on variables appearing in levels, and obtain t-stat on lagged dependent variable (-2.73)
+
 ```do
 test l.ln_inv l.ln_consump
 ```
 Run bounds test
+
 ```do
 pssbounds, fstat(3.83) obs(91) case(1) k(1) tstat(-2.73)
 ```
@@ -145,21 +151,25 @@ l.temp <- lag(airquality$Temp, k = 1)
 cbind(d.wind, d.temp, l.wind, l.temp)
 ```
 Run an error-correction model with the following regressors: the first difference of temp, and the lagged-levels of temp and wind (white-noise residuals assumed):
+
 ```r
 res <- lm(d.temp ~ l.temp + l.wind + d.wind)
 summary(res) # t-stat on l.temp = 4.438
 ```
 Perform F-test:
+
 ```r
 linearHypothesis(res, c("l.temp = 0", "l.wind = 0")) # 9.8789
 ```
 Grab critical values from bounds test:
+
 ```r
 bounds <- pssbounds(obs = 153, case = 3, k = 1, fstat = 9.879, tstat = 4.438)
 ```
 F-statistic bounds test concludes I(1) and cointegrating, but the t-statistic test concludes all I(0) regressors.
 
 Run the same model excluding the constant:
+
 ```r
 res2 <- lm(d.temp ~ l.temp + l.wind + d.wind - 1)
 summary(res2) # t-stat on l.temp =  1.445
