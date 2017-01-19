@@ -8,7 +8,8 @@ The most recent Stata version of `pssbounds`  can be downloaded by clicking [her
 
 ### R
 In R, the `pssbounds` function is part of the `pss` package, available [HERE](https://github.com/andyphilips/pss) (Jordan and Philips 2016). To download pss, you will need to obtain the devtools package and make a call from R to GitHub:
-```
+
+```r
 install.packages("devtools")
 library(devtools)
 install_github("andyphilips/pss")
@@ -41,6 +42,7 @@ As discussed in Philips (2016b), the upper and lower bounds of the PSS cointegra
 
 ## Syntax<a id="syntax"></a>
 ### Stata<a id="syntaxstata"></a>
+
 ```do
 pssbounds , observations(#) fstat(#) case(#) k(#) [tstat(#)]
 ```
@@ -55,6 +57,7 @@ pssbounds , observations(#) fstat(#) case(#) k(#) [tstat(#)]
 * `tstat(#)` is the value of the one-sided t-test that the coefficient on the lagged dependent variable is equal to zero. Only asymptotic critical values are currently available, and only for cases I, III, and V.
 
 ### R<a id="syntaxr"></a>
+
 ```r
 pssbounds(obs, fstat, tstat=NULL, case, k)
 ```
