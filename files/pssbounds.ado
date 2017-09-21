@@ -1,31 +1,86 @@
 *
 *		PROGRAM PSSBOUNDS
 *		
-*		version 1.3
-*		08/22/16
+*		version 1.0.5
+*		09/11/17
+*		Soren Jordan
+*			&
 *		Andrew Q. Philips
-*		Texas A&M University
-*		aphilips@pols.tamu.edu
-*		people.tamu.edu/~aphilips/
+*		CU Boulder
+*		andrew.philips@colorado.edu
+*		www.andyphilips.com
 *
 /*	ToDo:
-	
-
 */ 
-* Thanks to Eric Guntermann for pointing out a bug in the program.
 * -------------------------------------------------------------------------
 * -------------------------------------------------------------------------
 * -------------------------------------------------------------------------
 
 capture program drop pssbounds
 capture program define pssbounds, rclass
-syntax , OBServations(numlist) fstat(numlist) [tstat(numlist)] case(string)  k(numlist) 
+syntax , [OBServations(numlist) fstat(numlist) tstat(numlist) case(string) k(numlist)] 
 
 version 8
 
 
+* if previous cmd was dynardl, grab stored values unless something else desired.
+* If not, check to make sure necessary options specified:
+if "`observations'" != "" | "`fstat'" != "" | "`case'" != "" | "`k'" != "" {
+	if "`observations'" == "" {
+		di in r _n "option observations is missing"
+		exit 198
+	}
+	if "`fstat'" == "" {
+		di in r _n "option fstat is missing"
+		exit 198
+	}
+	if "`case'" == "" {
+		di in r _n "option case is missing"
+		exit 198
+	}
+	if "`k'" == "" {
+		di in r _n "option k is missing"
+		exit 198
+	}
+}
+else if "`e(cmd)'" == "dynardl" {
+	* grab fstat
+	qui test "`e(laglist)'"
+	loc fstat = "`r(F)'"
+	* grab case
+	loc case = "`e(type)'"
+	* grab k
+	loc k = "`e(k)'"
+	* grab obs 
+	loc observations = "`e(N)'"
+	* grab tstat
+	loc tstat = "`e(ldv_t)'"
+}
+else {
+	if "`observations'" == "" {
+		di in r _n "option observations is missing"
+		exit 198
+	}
+	if "`fstat'" == "" {
+		di in r _n "option fstat is missing"
+		exit 198
+	}
+	if "`case'" == "" {
+		di in r _n "option case is missing"
+		exit 198
+	}
+	if "`k'" == "" {
+		di in r _n "option k is missing"
+		exit 198
+	}
+}
+
+* if case = "", assume case(3)
+if "`case'" == ""	{
+	loc case = 3
+}
 * convert case into numeric from Roman numerals, if needed, or return an error:
-if "`case'" != "1" | "`case'" != "2" | "`case'" != "3" | "`case'" != "4" | "`case'" != "5"	{
+else if "`case'" != "1" | "`case'" != "2" | "`case'" != "3" | "`case'" != "4" | "`case'" != "5"	{
 }
 else	{
 	if "`case'" == "I"	{
@@ -57,7 +112,8 @@ if `obs' <= 30	{
  	* Case I: no intercept, no trend
 	if `case' == 1	{
 		* Doesn't exist! Use asym. crit values
-		 loc fnote = "Small-sample critical values not provided for Case I. Asymptotic critical values used."
+		 loc fnote = "Small-sample critical values not provided"
+		 loc fnote2 = "for Case I. Asymptotic critical values used."
 		 *					0.10	  0.05		0.010
 		 * 				I(0)	I(1) I(0) I(1) I(0) I(1)
 		 mat `fmat' = (3.00, 3.00, 4.20, 4.20, 7.17, 7.17 \  	/* 0
@@ -72,7 +128,8 @@ if `obs' <= 30	{
 		 */ 1.63, 2.75, 1.86, 3.05, 2.34, 3.68 	\	/* 9
 		 */ 1.60, 2.72, 1.82, 2.99, 2.26, 3.60) 	// 10 
 		 if "`tstat'" != ""	{
-		 	loc tnote "Small-sample critical values not provided for Case I. Asymptotic critical values used."
+		 	loc tnote "Small-sample critical values not provided"
+			loc tnote2 "for Case I. Asymptotic critical values used."
 		    *		0.10		0.05		0.010
 		    *  I(0)  I(1)  I(0)  I(1)    I(0)  I(1)
 		   	mat `tmat' = (-1.62, -1.62, -1.95, -1.95, -2.58, -2.58 \	/* 0
@@ -117,7 +174,8 @@ if `obs' <= 30	{
 		*/ 2.457, 3.797, 2.970, 4.499, 4.270, 6.211 \	/* 6
 		*/ 2.384, 3.728, 2.875, 4.445, 4.104, 6.151)	// 7
 		if "`tstat'" != ""	{
-		 	loc tnote "Small-sample critical values not provided for Case III. Asymptotic critical values used."
+		 	loc tnote "Small-sample critical values not provided"
+			loc tnote2 "for Case III. Asymptotic critical values used."
 		    *		0.10		0.05		0.010
 		    *  I(0)  I(1)  I(0)  I(1)   I(0)  I(1)
 		   mat `tmat' = (-2.57, -2.57, -2.86, -2.86, -3.43, -3.43 \  /* 0
@@ -162,7 +220,8 @@ if `obs' <= 30	{
 		*/ 2.977, 4.260, 3.576, 5.065, 5.046, 6.930 \	/* 6
 		*/ 2.483, 4.160, 3.394, 4.939, 4.779, 6.821)	// 7
 		if "`tstat'" != ""	{
-		 	loc tnote "Small-sample critical values not provided for Case V. Asymptotic critical values used."
+		 	loc tnote  "Small-sample critical values not provided"
+			loc tnote2  "for Case V. Asymptotic critical values used."
 		    *		0.10		0.05				0.010
 		    *  I(0)  I(1)  I(0)  I(1)   I(0)  I(1)
 		  mat `tmat' = (-3.13, -3.13, -3.41, -3.41, -3.96, -3.97 \  /* 0
@@ -184,7 +243,8 @@ else if `obs' <= 35	{
  	* Case I: no intercept, no trend
 	if `case' == 1	{
 		* Doesn't exist! Use asym. crit values
-		 loc fnote = "Small-sample critical values are not provided for Case I. Asymptotic critical values used."
+		 loc fnote "Small-sample critical values are not provided"
+		 loc fnote2 "for Case I. Asymptotic critical values used."
 		 *					0.10	  0.05		0.010
 		 * 				I(0)	I(1) I(0) I(1) I(0) I(1)
 		 mat `fmat' = (3.00, 3.00, 4.20, 4.20, 7.17, 7.17 \  	/* 0
@@ -199,7 +259,8 @@ else if `obs' <= 35	{
 		 */ 1.63, 2.75, 1.86, 3.05, 2.34, 3.68 	\	/* 9
 		 */ 1.60, 2.72, 1.82, 2.99, 2.26, 3.60) 	// 10 
 		 if "`tstat'" != ""	{
-		 	loc tnote "Small-sample critical values not provided for Case I. Asymptotic critical values used."
+		 	loc tnote "Small-sample critical values not provided"
+			loc tnote2 "for Case I. Asymptotic critical values used."
 		    *		0.10		0.05		0.010
 		    *  I(0)  I(1)  I(0)  I(1)    I(0)  I(1)
 		   	mat `tmat' = (-1.62, -1.62, -1.95, -1.95, -2.58, -2.58 \	/* 0
@@ -244,7 +305,8 @@ else if `obs' <= 35	{
 		*/ 2.387, 3.671, 2.864, 4.324, 4.016, 5.797 \	/* 6
 		*/ 2.300, 3.606, 2.753, 4.209, 3.841, 5.686)	// 7
 		if "`tstat'" != ""	{
-		 	loc tnote "Small-sample critical values not provided for Case III. Asymptotic critical values used."
+		 	loc tnote "Small-sample critical values not provided"
+			loc tnote2 "for Case III. Asymptotic critical values used."
 		    *		0.10		0.05		0.010
 		    *  I(0)  I(1)  I(0)  I(1)   I(0)  I(1)
 		   mat `tmat' = (-2.57, -2.57, -2.86, -2.86, -3.43, -3.43 \  /* 0
@@ -289,7 +351,8 @@ else if `obs' <= 35	{
 		*/ 2.879, 4.114, 3.426, 4.790, 4.704, 6.537 \	/* 6
 		*/ 2.729, 3.985, 3.251, 4.640, 4.459, 6.206)	// 7
 		if "`tstat'" != ""	{
-		 	loc tnote "Small-sample critical values not provided for Case V. Asymptotic critical values used."
+		 	loc tnote "Small-sample critical values not provided"
+			loc tnote2 "for Case V. Asymptotic critical values used."
 		    *		0.10		0.05				0.010
 		    *  I(0)  I(1)  I(0)  I(1)   I(0)  I(1)
 		  mat `tmat' = (-3.13, -3.13, -3.41, -3.41, -3.96, -3.97 \  /* 0
@@ -311,7 +374,8 @@ else if `obs' <= 40	{
  	* Case I: no intercept, no trend
 	if `case' == 1	{
 		* Doesn't exist! Use asym. crit values
-		 loc fnote = "Small-sample critical values are not provided for Case I. Asymptotic critical values used."
+		 loc fnote = "Small-sample critical values are not provided"
+		 loc fnote2 "for Case I. Asymptotic critical values used."
 		 *					0.10	  0.05		0.010
 		 * 				I(0)	I(1) I(0) I(1) I(0) I(1)
 		 mat `fmat' = (3.00, 3.00, 4.20, 4.20, 7.17, 7.17 \  	/* 0
@@ -326,7 +390,8 @@ else if `obs' <= 40	{
 		 */ 1.63, 2.75, 1.86, 3.05, 2.34, 3.68 	\	/* 9
 		 */ 1.60, 2.72, 1.82, 2.99, 2.26, 3.60) 	// 10 
 		 if "`tstat'" != ""	{
-		 	loc tnote "Small-sample critical values not provided for Case I. Asymptotic critical values used."
+		 	loc tnote "Small-sample critical values not provided"
+			loc tnote2 "for Case I. Asymptotic critical values used."
 		    *		0.10		0.05		0.010
 		    *  I(0)  I(1)  I(0)  I(1)    I(0)  I(1)
 		   	mat `tmat' = (-1.62, -1.62, -1.95, -1.95, -2.58, -2.58 \	/* 0
@@ -371,7 +436,8 @@ else if `obs' <= 40	{
 		*/ 2.353, 3.599, 2.797, 4.211, 3.800, 5.643 \	/* 6
 		*/ 2.260, 3.534, 2.676, 4.130, 3.644, 5.464)	// 7
 		if "`tstat'" != ""	{
-		 	loc tnote "Small-sample critical values not provided for Case III. Asymptotic critical values used."
+		 	loc tnote "Small-sample critical values not provided"
+			loc tnote2 "for Case III. Asymptotic critical values used."
 		    *		0.10		0.05		0.010
 		    *  I(0)  I(1)  I(0)  I(1)   I(0)  I(1)
 		   mat `tmat' = (-2.57, -2.57, -2.86, -2.86, -3.43, -3.43 \  /* 0
@@ -416,7 +482,8 @@ else if `obs' <= 40	{
 		*/ 2.831, 4.040, 3.327, 4.700, 4.527, 6.263 \	/* 6
 		*/ 2.668, 3.920, 3.121, 4.564, 4.310, 5.965)	// 7
 		if "`tstat'" != ""	{
-		 	loc tnote "Small-sample critical values not provided for Case V. Asymptotic critical values used."
+		 	loc tnote "Small-sample critical values not provided"
+			loc tnote2 "for Case V. Asymptotic critical values used."
 		    *		0.10		0.05				0.010
 		    *  I(0)  I(1)  I(0)  I(1)   I(0)  I(1)
 		  mat `tmat' = (-3.13, -3.13, -3.41, -3.41, -3.96, -3.97 \  /* 0
@@ -438,7 +505,8 @@ else if `obs' <= 45	{
  	* Case I: no intercept, no trend
 	if `case' == 1	{
 		* Doesn't exist! Use asym. crit values
-		 loc fnote = "Small-sample critical values are not provided for Case I. Asymptotic critical values used."
+		 loc fnote = "Small-sample critical values are not provided"
+		 loc fnote2 "for Case I. Asymptotic critical values used."
 		 *					0.10	  0.05		0.010
 		 * 				I(0)	I(1) I(0) I(1) I(0) I(1)
 		 mat `fmat' = (3.00, 3.00, 4.20, 4.20, 7.17, 7.17 \  	/* 0
@@ -453,7 +521,8 @@ else if `obs' <= 45	{
 		 */ 1.63, 2.75, 1.86, 3.05, 2.34, 3.68 	\	/* 9
 		 */ 1.60, 2.72, 1.82, 2.99, 2.26, 3.60) 	// 10 
 		 if "`tstat'" != ""	{
-		 	loc tnote "Small-sample critical values not provided for Case I. Asymptotic critical values used."
+		 	loc tnote "Small-sample critical values not provided"
+			loc tnote2 "for Case I. Asymptotic critical values used."
 		    *		0.10		0.05		0.010
 		    *  I(0)  I(1)  I(0)  I(1)    I(0)  I(1)
 		   	mat `tmat' = (-1.62, -1.62, -1.95, -1.95, -2.58, -2.58 \	/* 0
@@ -498,7 +567,8 @@ else if `obs' <= 45	{
 		*/ 2.327, 3.541, 2.764, 4.123, 3.790, 5.411 \	/* 6
 		*/ 2.238, 3.461, 2.643, 4.004, 3.595, 5.225)	// 7
 		if "`tstat'" != ""	{
-		 	loc tnote "Small-sample critical values not provided for Case III. Asymptotic critical values used."
+		 	loc tnote "Small-sample critical values not provided"
+			loc tnote2 "for Case III. Asymptotic critical values used."
 		    *		0.10		0.05		0.010
 		    *  I(0)  I(1)  I(0)  I(1)   I(0)  I(1)
 		   mat `tmat' = (-2.57, -2.57, -2.86, -2.86, -3.43, -3.43 \  /* 0
@@ -543,7 +613,8 @@ else if `obs' <= 45	{
 		*/ 2.796, 3.970, 3.267, 4.584, 4.364, 6.006 \	/* 6
 		*/ 2.635, 3.838, 3.091, 4.413, 4.109, 5.785)	// 7
 		if "`tstat'" != ""	{
-		 	loc tnote "Small-sample critical values not provided for Case V. Asymptotic critical values used."
+		 	loc tnote "Small-sample critical values not provided"
+			loc tnote2 "for Case V. Asymptotic critical values used."
 		    *		0.10		0.05				0.010
 		    *  I(0)  I(1)  I(0)  I(1)   I(0)  I(1)
 		  mat `tmat' = (-3.13, -3.13, -3.41, -3.41, -3.96, -3.97 \  /* 0
@@ -565,7 +636,8 @@ else if `obs' <= 50	{
  	* Case I: no intercept, no trend
 	if `case' == 1	{
 		* Doesn't exist! Use asym. crit values
-		 loc fnote = "Small-sample critical values are not provided for Case I. Asymptotic critical values used."
+		 loc fnote = "Small-sample critical values are not provided"
+		 loc fnote2 "for Case I. Asymptotic critical values used."
 		 *					0.10	  0.05		0.010
 		 * 				I(0)	I(1) I(0) I(1) I(0) I(1)
 		 mat `fmat' = (3.00, 3.00, 4.20, 4.20, 7.17, 7.17 \  	/* 0
@@ -580,7 +652,8 @@ else if `obs' <= 50	{
 		 */ 1.63, 2.75, 1.86, 3.05, 2.34, 3.68 	\	/* 9
 		 */ 1.60, 2.72, 1.82, 2.99, 2.26, 3.60) 	// 10 
 		 if "`tstat'" != ""	{
-		 	loc tnote "Small-sample critical values not provided for Case I. Asymptotic critical values used."
+		 	loc tnote "Small-sample critical values not provided"
+			loc tnote2 "for Case I. Asymptotic critical values used."
 		    *		0.10		0.05		0.010
 		    *  I(0)  I(1)  I(0)  I(1)    I(0)  I(1)
 		   	mat `tmat' = (-1.62, -1.62, -1.95, -1.95, -2.58, -2.58 \	/* 0
@@ -625,7 +698,8 @@ else if `obs' <= 50	{
 		*/ 2.309, 3.507, 2.726, 4.057, 3.656, 5.331 \	/* 6
 		*/ 2.205, 3.421, 2.593, 3.941, 3.498, 5.149)	// 7	
 		if "`tstat'" != ""	{
-		 	loc tnote "Small-sample critical values not provided for Case III. Asymptotic critical values used."
+		 	loc tnote "Small-sample critical values not provided"
+			loc tnote2 "for Case III. Asymptotic critical values used."
 		    *		0.10		0.05		0.010
 		    *  I(0)  I(1)  I(0)  I(1)   I(0)  I(1)
 		   mat `tmat' = (-2.57, -2.57, -2.86, -2.86, -3.43, -3.43 \  /* 0
@@ -670,7 +744,8 @@ else if `obs' <= 50	{
 		*/ 2.750, 3.944, 3.229, 4.536, 4.310, 5.881  \	/* 6
 		*/ 2.590, 3.789, 3.039, 4.339, 4.055, 5.640)	// 7
 		if "`tstat'" != ""	{
-		 	loc tnote "Small-sample critical values not provided for Case V. Asymptotic critical values used."
+		 	loc tnote "Small-sample critical values not provided"
+			loc tnote2 "for Case V. Asymptotic critical values used."
 		    *		0.10		0.05				0.010
 		    *  I(0)  I(1)  I(0)  I(1)   I(0)  I(1)
 		  mat `tmat' = (-3.13, -3.13, -3.41, -3.41, -3.96, -3.97 \  /* 0
@@ -692,7 +767,8 @@ else if `obs' <= 55	{
  	* Case I: no intercept, no trend
 	if `case' == 1	{
 		* Doesn't exist! Use asym. crit values
-		 loc fnote = "Small-sample critical values are not provided for Case I. Asymptotic critical values used."
+		 loc fnote = "Small-sample critical values are not provided"
+		 loc fnote2 "for Case I. Asymptotic critical values used."
 		 *					0.10	  0.05		0.010
 		 * 				I(0)	I(1) I(0) I(1) I(0) I(1)
 		 mat `fmat' = (3.00, 3.00, 4.20, 4.20, 7.17, 7.17 \  	/* 0
@@ -707,7 +783,8 @@ else if `obs' <= 55	{
 		 */ 1.63, 2.75, 1.86, 3.05, 2.34, 3.68 	\	/* 9
 		 */ 1.60, 2.72, 1.82, 2.99, 2.26, 3.60) 	// 10 
 		 if "`tstat'" != ""	{
-		 	loc tnote "Small-sample critical values not provided for Case I. Asymptotic critical values used."
+		 	loc tnote "Small-sample critical values not provided"
+			loc tnote2 "for Case I. Asymptotic critical values used."
 		    *		0.10		0.05		0.010
 		    *  I(0)  I(1)  I(0)  I(1)    I(0)  I(1)
 		   	mat `tmat' = (-1.62, -1.62, -1.95, -1.95, -2.58, -2.58 \	/* 0
@@ -752,7 +829,8 @@ else if `obs' <= 55	{
 		*/ 2.270, 3.486, 2.676, 3.999, 3.636, 5.169 \	/* 6
 		*/ 2.181, 3.398, 2.556, 3.904, 3.424, 4.989 )	// 7
 		if "`tstat'" != ""	{
-		 	loc tnote "Small-sample critical values not provided for Case III. Asymptotic critical values used."
+		 	loc tnote "Small-sample critical values not provided"
+			loc tnote2 "for Case III. Asymptotic critical values used."
 		    *		0.10		0.05		0.010
 		    *  I(0)  I(1)  I(0)  I(1)   I(0)  I(1)
 		   mat `tmat' = (-2.57, -2.57, -2.86, -2.86, -3.43, -3.43 \  /* 0
@@ -797,7 +875,8 @@ else if `obs' <= 55	{
 		*/ 2.724, 3.893, 3.197, 4.460, 4.230, 5.713 \	/* 6
 		*/ 2.573, 3.760, 2.989, 4.271, 3.955, 5.474)	// 7
 		if "`tstat'" != ""	{
-		 	loc tnote "Small-sample critical values not provided for Case V. Asymptotic critical values used."
+		 	loc tnote "Small-sample critical values not provided"
+			loc tnote2 "for Case V. Asymptotic critical values used."
 		    *		0.10		0.05				0.010
 		    *  I(0)  I(1)  I(0)  I(1)   I(0)  I(1)
 		  mat `tmat' = (-3.13, -3.13, -3.41, -3.41, -3.96, -3.97 \  /* 0
@@ -819,7 +898,8 @@ else if `obs' <= 60	{
  	* Case I: no intercept, no trend
 	if `case' == 1	{
 		* Doesn't exist! Use asym. crit values
-		 loc fnote = "Small-sample critical values are not provided for Case I. Asymptotic critical values used."
+		 loc fnote = "Small-sample critical values are not provided"
+		 loc fnote2 "for Case I. Asymptotic critical values used."
 		 *					0.10	  0.05		0.010
 		 * 				I(0)	I(1) I(0) I(1) I(0) I(1)
 		 mat `fmat' = (3.00, 3.00, 4.20, 4.20, 7.17, 7.17 \  	/* 0
@@ -834,7 +914,8 @@ else if `obs' <= 60	{
 		 */ 1.63, 2.75, 1.86, 3.05, 2.34, 3.68 	\	/* 9
 		 */ 1.60, 2.72, 1.82, 2.99, 2.26, 3.60) 	// 10 
 		 if "`tstat'" != ""	{
-		 	loc tnote "Small-sample critical values not provided for Case I. Asymptotic critical values used."
+		 	loc tnote "Small-sample critical values not provided"
+			loc tnote2 "for Case I. Asymptotic critical values used."
 		    *		0.10		0.05		0.010
 		    *  I(0)  I(1)  I(0)  I(1)    I(0)  I(1)
 		   	mat `tmat' = (-1.62, -1.62, -1.95, -1.95, -2.58, -2.58 \	/* 0
@@ -879,7 +960,8 @@ else if `obs' <= 60	{
 		*/ 2.253, 3.436, 2.643, 3.939, 3.531, 5.081 \	/* 6
 		*/ 2.155, 3.353, 2.513, 3.823, 3.346, 4.895)	// 7
 		if "`tstat'" != ""	{
-		 	loc tnote "Small-sample critical values not provided for Case III. Asymptotic critical values used."
+		 	loc tnote "Small-sample critical values not provided"
+			loc tnote2 "for Case III. Asymptotic critical values used."
 		    *		0.10		0.05		0.010
 		    *  I(0)  I(1)  I(0)  I(1)   I(0)  I(1)
 		   mat `tmat' = (-2.57, -2.57, -2.86, -2.86, -3.43, -3.43 \  /* 0
@@ -924,7 +1006,8 @@ else if `obs' <= 60	{
 		*/ 2.709, 3.856, 3.137, 4.393, 4.117, 5.597  \	/* 6
 		*/ 2.551, 3.716, 2.956, 4.230, 3.870, 5.338)	// 7	
 		if "`tstat'" != ""	{
-		 	loc tnote "Small-sample critical values not provided for Case V. Asymptotic critical values used."
+		 	loc tnote "Small-sample critical values not provided"
+			loc tnote2 "for Case V. Asymptotic critical values used."
 		    *		0.10		0.05				0.010
 		    *  I(0)  I(1)  I(0)  I(1)   I(0)  I(1)
 		  mat `tmat' = (-3.13, -3.13, -3.41, -3.41, -3.96, -3.97 \  /* 0
@@ -946,7 +1029,8 @@ else if `obs' <= 65	{
  	* Case I: no intercept, no trend
 	if `case' == 1	{
 		* Doesn't exist! Use asym. crit values
-		 loc fnote = "Small-sample critical values are not provided for Case I. Asymptotic critical values used."
+		 loc fnote = "Small-sample critical values are not provided"
+		 loc fnote2 "for Case I. Asymptotic critical values used."
 		 *					0.10	  0.05		0.010
 		 * 				I(0)	I(1) I(0) I(1) I(0) I(1)
 		 mat `fmat' = (3.00, 3.00, 4.20, 4.20, 7.17, 7.17 \  	/* 0
@@ -961,7 +1045,8 @@ else if `obs' <= 65	{
 		 */ 1.63, 2.75, 1.86, 3.05, 2.34, 3.68 	\	/* 9
 		 */ 1.60, 2.72, 1.82, 2.99, 2.26, 3.60) 	// 10 
 		 if "`tstat'" != ""	{
-		 	loc tnote "Small-sample critical values not provided for Case I. Asymptotic critical values used."
+		 	loc tnote "Small-sample critical values not provided"
+			loc tnote2 "for Case I. Asymptotic critical values used."
 		    *		0.10		0.05		0.010
 		    *  I(0)  I(1)  I(0)  I(1)    I(0)  I(1)
 		   	mat `tmat' = (-1.62, -1.62, -1.95, -1.95, -2.58, -2.58 \	/* 0
@@ -1006,7 +1091,8 @@ else if `obs' <= 65	{
 		*/ 2.256, 3.430, 2.647, 3.921, 3.501, 5.051 \	/* 6
 		*/ 2.156, 3.334, 2.525, 3.808, 3.310, 4.871)	// 7	
 		if "`tstat'" != ""	{
-		 	loc tnote "Small-sample critical values not provided for Case III. Asymptotic critical values used."
+		 	loc tnote "Small-sample critical values not provided"
+			loc tnote2 "for Case III. Asymptotic critical values used."
 		    *		0.10		0.05		0.010
 		    *  I(0)  I(1)  I(0)  I(1)   I(0)  I(1)
 		   mat `tmat' = (-2.57, -2.57, -2.86, -2.86, -3.43, -3.43 \  /* 0
@@ -1051,7 +1137,8 @@ else if `obs' <= 65	{
 		*/ 2.690, 3.830, 3.137, 4.363, 4.111, 5.586 \	/* 6
 		*/ 2.531, 3.685, 2.924, 4.206, 3.835, 5.339)	// 7
 		if "`tstat'" != ""	{
-		 	loc tnote "Small-sample critical values not provided for Case V. Asymptotic critical values used."
+		 	loc tnote "Small-sample critical values not provided"
+			loc tnote2 "for Case V. Asymptotic critical values used."
 		    *		0.10		0.05				0.010
 		    *  I(0)  I(1)  I(0)  I(1)   I(0)  I(1)
 		  mat `tmat' = (-3.13, -3.13, -3.41, -3.41, -3.96, -3.97 \  /* 0
@@ -1073,7 +1160,8 @@ else if `obs' <= 70	{
  	* Case I: no intercept, no trend
 	if `case' == 1	{
 		* Doesn't exist! Use asym. crit values
-		 loc fnote = "Small-sample critical values are not provided for Case I. Asymptotic critical values used."
+		 loc fnote = "Small-sample critical values are not provided"
+		 loc fnote2 "for Case I. Asymptotic critical values used."
 		 *					0.10	  0.05		0.010
 		 * 				I(0)	I(1) I(0) I(1) I(0) I(1)
 		 mat `fmat' = (3.00, 3.00, 4.20, 4.20, 7.17, 7.17 \  	/* 0
@@ -1088,7 +1176,8 @@ else if `obs' <= 70	{
 		 */ 1.63, 2.75, 1.86, 3.05, 2.34, 3.68 	\	/* 9
 		 */ 1.60, 2.72, 1.82, 2.99, 2.26, 3.60) 	// 10 
 		 if "`tstat'" != ""	{
-		 	loc tnote "Small-sample critical values not provided for Case I. Asymptotic critical values used."
+		 	loc tnote "Small-sample critical values not provided"
+			loc tnote2 "for Case I. Asymptotic critical values used."
 		    *		0.10		0.05		0.010
 		    *  I(0)  I(1)  I(0)  I(1)    I(0)  I(1)
 		   	mat `tmat' = (-1.62, -1.62, -1.95, -1.95, -2.58, -2.58 \	/* 0
@@ -1133,7 +1222,8 @@ else if `obs' <= 70	{
 		*/ 2.233, 3.407, 2.629, 3.906, 3.436, 5.044 \	/* 6
 		*/ 2.138, 3.325, 2.494, 3.786, 3.261, 4.821)	// 7	
 		if "`tstat'" != ""	{
-		 	loc tnote "Small-sample critical values not provided for Case III. Asymptotic critical values used."
+		 	loc tnote "Small-sample critical values not provided"
+			loc tnote2 "for Case III. Asymptotic critical values used."
 		    *		0.10		0.05		0.010
 		    *  I(0)  I(1)  I(0)  I(1)   I(0)  I(1)
 		   mat `tmat' = (-2.57, -2.57, -2.86, -2.86, -3.43, -3.43 \  /* 0
@@ -1178,7 +1268,8 @@ else if `obs' <= 70	{
 		*/ 2.683, 3.807, 3.107, 4.343, 4.070, 5.534 \	/* 6
 		*/ 2.519, 3.669, 2.913, 4.168, 3.774, 5.248)	// 7
 		if "`tstat'" != ""	{
-		 	loc tnote "Small-sample critical values not provided for Case V. Asymptotic critical values used."
+		 	loc tnote "Small-sample critical values not provided"
+			loc tnote2 "for Case V. Asymptotic critical values used."
 		    *		0.10		0.05				0.010
 		    *  I(0)  I(1)  I(0)  I(1)   I(0)  I(1)
 		  mat `tmat' = (-3.13, -3.13, -3.41, -3.41, -3.96, -3.97 \  /* 0
@@ -1200,7 +1291,8 @@ else if `obs' <= 75	{
  	* Case I: no intercept, no trend
 	if `case' == 1	{
 		* Doesn't exist! Use asym. crit values
-		 loc fnote = "Small-sample critical values are not provided for Case I. Asymptotic critical values used."
+		 loc fnote = "Small-sample critical values are not provided"
+		 loc fnote2 "for Case I. Asymptotic critical values used."
 		 *					0.10	  0.05		0.010
 		 * 				I(0)	I(1) I(0) I(1) I(0) I(1)
 		 mat `fmat' = (3.00, 3.00, 4.20, 4.20, 7.17, 7.17 \  	/* 0
@@ -1215,7 +1307,8 @@ else if `obs' <= 75	{
 		 */ 1.63, 2.75, 1.86, 3.05, 2.34, 3.68 	\	/* 9
 		 */ 1.60, 2.72, 1.82, 2.99, 2.26, 3.60) 	// 10 
 		 if "`tstat'" != ""	{
-		 	loc tnote "Small-sample critical values not provided for Case I. Asymptotic critical values used."
+		 	loc tnote "Small-sample critical values not provided"
+			loc tnote2 "for Case I. Asymptotic critical values used."
 		    *		0.10		0.05		0.010
 		    *  I(0)  I(1)  I(0)  I(1)    I(0)  I(1)
 		   	mat `tmat' = (-1.62, -1.62, -1.95, -1.95, -2.58, -2.58 \	/* 0
@@ -1693,8 +1786,10 @@ if "`tstat'" != ""	{
 }
 di in smcl in gr 	"{hline 60}"
 di in smcl in gr	"F-statistic note: `fnote'"
+di in smcl in gr	"`fnote2'"
 if "`tstat'" != ""	{
 	di in smcl in gr "t-statistic note: `tnote'"
+	di in smcl in gr "`tnote2'"
 }
 
 
